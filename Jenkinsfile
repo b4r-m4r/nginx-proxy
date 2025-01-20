@@ -2,7 +2,7 @@ pipeline {
     environment {
         dockerImage = "minipuppeteer/nginx-proxy"
         dockerTag = "latest"
-        dockerHost = "127.0.0.1"
+        DOCKER_HOST = "127.0.0.1"
     }
     agent any
 
@@ -18,14 +18,14 @@ pipeline {
         stage('Build') {
             steps {
                     echo 'Building with local docker daemon...'
-                    sh "docker -H ${dockerHost} build -t ${dockerImage}:${dockerTag} ."
+                    sh "docker build -t ${dockerImage}:${dockerTag} ."
                 }
             }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                sh "docker -H ${dockerHost} push ${dockerImage}:${dockerTag}"
+                sh "docker push ${dockerImage}:${dockerTag}"
             }
         }
     }
